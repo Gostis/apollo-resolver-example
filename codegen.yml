@@ -1,0 +1,34 @@
+schema: "./src/schema.graphql"
+generates:
+  ./src/generated-types/resolversTypes.ts:
+    config:
+      mappers:
+        User: src/types#UserModel
+        Profile: src/types#UserProfile
+        NobelPrizesAPIResponse: src/types#NobelPrizesAPIResponse
+        NobelPrize: src/types#NobelPrize
+        Translation: src/types#Translation
+        ItemLinks: src/types#ItemLinks
+        LaureateBasic: src/types#LaureateBasic
+        TranslationWithSameas: src/types#TranslationWithSameas
+        Location: src/types#Location
+        Event: src/types#Event
+        Person: src/types#Person
+        Organization: src/types#Organization
+        Wikipedia: src/types#Wikipedia
+        WikiData: src/types#WikiData
+        Entity: src/types#Entity
+        Residence: src/types#Residence
+        NobelPrizePerLaureate: src/types#NobelPrizePerLaureate
+        LaureatePerson: src/types#LaureatePerson
+        LaureateOrganization: src/types#LaureateOrganization
+        LaureatesAPIResponse: src/types#LaureatesAPIResponse
+        LaureateExtended: src/types#LaureateExtended
+        LaureateExtendedOnSpecificNobelPrize: src/types#LaureateExtendedOnSpecificNobelPrize
+        NobelPrizeSpecific: src/types#NobelPrizeSpecific
+        Author: src/types#Author
+        Book: src/types#Book
+
+    plugins:
+      - typescript
+      - typescript-resolvers

@@ -1,0 +1,238 @@
+type User {
+  id: ID!
+  email: String!
+  profile: Profile
+}
+
+type Profile {
+  age: Int
+  firstName: String
+  lastName: String
+}
+
+type AuthorResponse {
+  id: Int!
+  name: String
+  books: [Book]
+}
+
+type Author {
+  id: Int!
+  title: String
+}
+type Book {
+  id: Int!
+  title: String
+  authorId: Int
+}
+
+type Query {
+  user(id: ID!): User!
+  nobelPrizes(
+    offset: Int
+    limit: Int
+    sort: String
+    nobelPrizeYear: Int
+    yearTo: Int
+    nobelPrizeCategory: String
+  ): NobelPrizesAPIResponse!
+  laureates(
+    offset: Int
+    limit: Int
+    sort: String
+    ID: Int
+    name: String
+    gender: String
+    motivation: String
+    affiliation: String
+    Residence: String
+  ): LaureatesAPIResponse!
+  nobelPrizeSpecific(category: String!, year: Int!): NobelPrizeSpecific!
+  authors: [AuthorResponse]!
+}
+type LaureatesAPIResponse {
+  laureates: [LaureateExtended]
+}
+
+type NobelPrizeSpecific {
+  awardYear: Int
+  category: Translation
+  categoryFullName: Translation
+  dateAwarded: String
+  prizeAmount: Int
+  prizeAmountAdjusted: Int
+  topMotivation: Translation
+  laureates: [LaureateExtendedOnSpecificNobelPrize]
+}
+
+union LaureateExtendedOnSpecificNobelPrize =
+    LaureatePerson
+  | LaureateOrganization
+  | LaureateBasic
+
+union LaureateExtended = LaureatePerson | LaureateOrganization
+
+type NobelPrizesAPIResponse {
+  nobelPrizes: [NobelPrize]
+}
+
+type NobelPrize {
+  awardYear: Int
+  category: Translation
+  categoryFullName: Translation
+  dateAwarded: String
+  prizeAmount: Int
+  prizeAmountAdjusted: Int
+  topMotivation: Translation
+  laureates: [LaureateBasic]
+}
+
+type Translation {
+  en: String
+  sn: String
+  no: String
+}
+
+type ItemLinks {
+  rel: String
+  href: String
+  action: String
+  types: String
+}
+
+type Laureate {
+  id: Int
+  wikipedia: Wikipedia
+  wikiData: WikiData
+  sameAs: [String]
+  links: ItemLinks
+  nobelPrizes: [NobelPrizePerLaureate]
+}
+
+type Wikipedia {
+  slug: String
+  english: String
+}
+
+type WikiData {
+  id: String
+  url: String
+}
+
+type Entity {
+  name: Translation
+  nameNow: Translation
+  nativeName: String
+  city: Translation
+  country: Translation
+  cityNow: TranslationWithSameas
+  countryNow: TranslationWithSameas
+  locationString: Translation
+}
+
+type Residence {
+  city: Translation
+  country: Translation
+  cityNow: TranslationWithSameas
+  countryNow: TranslationWithSameas
+  locationString: Translation
+}
+
+type TranslationWithSameas {
+  sameAs: [String]
+  en: String
+  sn: String
+  no: String
+}
+
+type NobelPrizePerLaureate {
+  awardYear: Int
+  category: Translation
+  categoryFullName: Translation
+  sortOrder: String
+  portion: String
+  dateAwarded: String
+  prizeStatus: String
+  motivation: Translation
+  prizeAmount: Int
+  prizeAmountAdjusted: Int
+  affiliations: [Entity]
+  residences: [Residence]
+  links: [ItemLinks]
+}
+
+type Event {
+  date: String
+  place: Location
+}
+
+type Location {
+  city: Translation
+  country: Translation
+  cityNow: TranslationWithSameas
+  countryNow: TranslationWithSameas
+  continent: Translation
+  locationString: Translation
+}
+
+type Person {
+  knownName: Translation
+  givenName: Translation
+  familyName: Translation
+  fullName: Translation
+  filename: String
+  gender: String
+  birth: Event
+  death: Event
+}
+
+type LaureatePerson {
+  knownName: Translation
+  givenName: Translation
+  familyName: Translation
+  fullName: Translation
+  filename: String
+  gender: String
+  birth: Event
+  death: Event
+  id: Int
+  wikipedia: Wikipedia
+  wikiData: WikiData
+  sameAs: [String]
+  links: ItemLinks
+  nobelPrizes: [NobelPrizePerLaureate]
+}
+
+type LaureateOrganization {
+  id: Int
+  wikipedia: Wikipedia
+  wikiData: WikiData
+  sameAs: [String]
+  links: ItemLinks
+  nobelPrizes: [NobelPrizePerLaureate]
+  orgName: Translation
+  nativeName: String
+  acronym: String
+  founded: Event
+  dissolution: Event
+  headquarters: Location
+}
+
+type LaureateBasic {
+  id: Int
+  knownName: Translation
+  fullName: Translation
+  portion: String
+  sortOrder: String
+  motivation: Translation
+  links: [ItemLinks]
+}
+
+type Organization {
+  orgName: Translation
+  nativeName: String
+  acronym: String
+  founded: Event
+  dissolution: Event
+  headquarters: Location
+}
